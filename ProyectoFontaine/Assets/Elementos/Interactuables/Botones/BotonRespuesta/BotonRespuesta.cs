@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class BotonRespuesta : MonoBehaviour {
 
     public string textoRespuesta;
-    public bool verdadera;
     public int numero;
 
     private Text textoBoton;
@@ -18,7 +17,7 @@ public class BotonRespuesta : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+		actualizarValores();
 	}
 
     public void actualizarValores()

@@ -5,36 +5,39 @@ using UnityEngine.UI;
 
 public class BarraProgresoTiempo : MonoBehaviour {
 
-	public int numeroPreguntaMaxima;
-    public float numeroPreguntaActual;
+	public float tiempoMaximo;
+	public bool contar;
 	public bool over;
 
 	private Image imageProgreso;
-	
+	private float tiempo;
+
 	// Use this for initialization
 	void Start () {
 		imageProgreso = GameObject.Find(this.gameObject.name + "/ImageProgreso").GetComponent<Image>();
+		contar = false;
 		over = false;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        if (numeroPreguntaActual >= numeroPreguntaMaxima)
-        {
-            over = true;
-        }
-        else
-        {
-            over = false;
-        }
-		imageProgreso.fillAmount = numeroPreguntaActual / numeroPreguntaMaxima;
+		if(tiempo < tiempoMaximo && contar)
+		{
+			tiempo += Time.deltaTime;
+		}else if(tiempo >= tiempoMaximo)
+		{
+			over = true;
+		}
+		imageProgreso.fillAmount = tiempo / tiempoMaximo;
 	}
 
-    public void aumentarPregunta()
-    {
-        if (numeroPreguntaActual < numeroPreguntaMaxima)
-        {
-            numeroPreguntaActual++;
-        }
-    }
+	public void empezarTiempo()
+	{
+		contar = true;
+	}
+
+	public void detenerTiempo()
+	{
+		contar = false;
+	}
 }

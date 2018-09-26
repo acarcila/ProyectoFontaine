@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BarraProgresoTiempo : MonoBehaviour {
+public class BarraProgresoPreguntas : MonoBehaviour {
 
 	public int numeroPreguntasMaximo;
     public int numeroPreguntas;

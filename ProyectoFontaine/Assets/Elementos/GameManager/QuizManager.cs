@@ -13,6 +13,8 @@ public class QuizManager : MonoBehaviour {
 	public Button botonRespuesta2;
 	public Button botonRespuesta3;
 	public Button botonRespuesta4;
+	public BarraProgresoPreguntas barraProgresoPreguntas;
+	public PanelRespuesta panelRespuesta;
 	private static List<Pregunta> preguntasSinResponder;
 	private Pregunta preguntaActual;
 	// Use this for initialization
@@ -23,12 +25,12 @@ public class QuizManager : MonoBehaviour {
 		}
 
 		getPreguntaAleatoria();
-		Debug.Log(preguntaActual.pregunta);
+		actualizarBarraProgresoPreguntas();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
+		actualizarBarraProgresoPreguntas();
 	}
 
 	public void getPreguntaAleatoria()
@@ -44,6 +46,11 @@ public class QuizManager : MonoBehaviour {
 	{
 		textoPregunta.text = preguntaActual.pregunta;
 
+		botonRespuesta1.enabled = true;
+		botonRespuesta2.enabled = true;
+		botonRespuesta3.enabled = true;
+		botonRespuesta4.enabled = true;
+
 		botonRespuesta1.GetComponent<BotonRespuesta>().textoRespuesta = preguntaActual.opcion1.opcion;
 		botonRespuesta2.GetComponent<BotonRespuesta>().textoRespuesta = preguntaActual.opcion2.opcion;
 		botonRespuesta3.GetComponent<BotonRespuesta>().textoRespuesta = preguntaActual.opcion3.opcion;
@@ -55,10 +62,12 @@ public class QuizManager : MonoBehaviour {
 		if(numeroRespuesta == preguntaActual.opcionCorrecta)
 		{
 			Debug.Log("CORRECTO");
+			panelRespuesta.valorRespuesta = true;
 		}
 		else
 		{
 			Debug.Log("INCORRECTO");
+			panelRespuesta.valorRespuesta = false;
 		}
 
 		botonRespuesta1.enabled = false;
@@ -66,7 +75,15 @@ public class QuizManager : MonoBehaviour {
 		botonRespuesta3.enabled = false;
 		botonRespuesta4.enabled = false;
 		
+		panelRespuesta.GetComponent<Animator>().SetBool("Entrada", true);
+
 		StartCoroutine(pasarALaSiguientePregunta());
+	}
+
+	public void actualizarBarraProgresoPreguntas()
+	{
+		barraProgresoPreguntas.numeroPreguntasMaximo = preguntas.Length;
+		barraProgresoPreguntas.numeroPreguntas = preguntas.Length - preguntasSinResponder.Count;
 	}
 
 	IEnumerator pasarALaSiguientePregunta()
@@ -75,7 +92,10 @@ public class QuizManager : MonoBehaviour {
 
 		yield return new WaitForSeconds(1f);
 
-		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-
+		if(preguntasSinResponder.Count > 0)
+		{
+			getPreguntaAleatoria();
+			panelRespuesta.GetComponent<Animator>().SetBool("Entrada", false);
+		}
 	}
 }

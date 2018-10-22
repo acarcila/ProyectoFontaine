@@ -17,9 +17,12 @@ public class GameManager : MonoBehaviour {
 	public string nombreBaseDatos;
 	public string usuarioBaseDatos;
 	public string contraseniaBaseDatos;
+	public QuizManager quizManager;
 	
 	private string datosConexion;
 	private MySqlConnection conexion;
+
+	private Pregunta[] preguntas;
 	// Use this for initialization
 	void Start () {
 		datosConexion = "Server=" + servidorBaseDatos + ";Database=" + nombreBaseDatos + ";Uid=" + usuarioBaseDatos + ";Pwd=" + contraseniaBaseDatos + ";";
@@ -30,14 +33,37 @@ public class GameManager : MonoBehaviour {
 		DataTable tabla = new DataTable();
 		tabla.Load(resultado);
 		
-		foreach(DataRow row in tabla.Rows)
+		preguntas = new Pregunta[tabla.Rows.Count];
+
+		// foreach(DataRow row in tabla.Rows)
+		// {
+		for(int i = 0; i < tabla.Rows.Count; i++)
 		{
-			Debug.Log(row["pregunta"].ToString());
+			DataRow row = tabla.Rows[i];
+			string pregunta = row["pregunta"].ToString();
+			string opcion1 = row["opcion1"].ToString();
+			string opcion2 = row["opcion2"].ToString();
+			string opcion3 = row["opcion3"].ToString();
+			string opcion4 = row["opcion4"].ToString();
+			int opcionCorrecta = int.Parse(row["opcion_correcta"].ToString());
+
+			preguntas[i] = new Pregunta(pregunta, opcion1, opcion2, opcion3, opcion4, opcionCorrecta);
 		}
+
+		quizManager.setPreguntas(preguntas);
 
 		resultado.Close();
 
 		
+		
+	}
+
+	void Update()
+	{
+		if(Input.GetKeyDown(KeyCode.Escape))
+		{
+			Application.Quit();
+		}
 	}
 	
 	private void conectarServidorBD()

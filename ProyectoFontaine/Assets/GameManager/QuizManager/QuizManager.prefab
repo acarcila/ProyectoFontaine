@@ -127,5 +127,4 @@ MonoBehaviour:
   botonRespuesta2: {fileID: 0}
   botonRespuesta3: {fileID: 0}
   botonRespuesta4: {fileID: 0}
-  barraProgresoPreguntas: {fileID: 0}
   panelRespuesta: {fileID: 0}

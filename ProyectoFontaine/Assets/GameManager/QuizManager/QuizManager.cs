@@ -7,30 +7,34 @@ using UnityEngine.SceneManagement;
 
 public class QuizManager : MonoBehaviour {
 
-	public Pregunta[] preguntas;
 	public Text textoPregunta;
 	public Button botonRespuesta1;
 	public Button botonRespuesta2;
 	public Button botonRespuesta3;
 	public Button botonRespuesta4;
-	public BarraProgresoPreguntas barraProgresoPreguntas;
 	public PanelRespuesta panelRespuesta;
+	private Pregunta[] preguntas;
 	private static List<Pregunta> preguntasSinResponder;
 	private Pregunta preguntaActual;
 	// Use this for initialization
 	void Start () {
+		
+	}
+	
+	// Update is called once per frame
+	void Update () {
+	}
+
+	public void setPreguntas(Pregunta[] preguntas)
+	{
+		this.preguntas = preguntas;
+
 		if(preguntasSinResponder == null)
 		{
 			preguntasSinResponder = preguntas.ToList();
 		}
 
 		getPreguntaAleatoria();
-		actualizarBarraProgresoPreguntas();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		actualizarBarraProgresoPreguntas();
 	}
 
 	public void getPreguntaAleatoria()
@@ -78,12 +82,6 @@ public class QuizManager : MonoBehaviour {
 		panelRespuesta.GetComponent<Animator>().SetBool("Entrada", true);
 
 		StartCoroutine(pasarALaSiguientePregunta());
-	}
-
-	public void actualizarBarraProgresoPreguntas()
-	{
-		barraProgresoPreguntas.numeroPreguntasMaximo = preguntas.Length;
-		barraProgresoPreguntas.numeroPreguntas = preguntas.Length - preguntasSinResponder.Count;
 	}
 
 	IEnumerator pasarALaSiguientePregunta()

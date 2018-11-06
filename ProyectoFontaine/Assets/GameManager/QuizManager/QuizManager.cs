@@ -95,5 +95,24 @@ public class QuizManager : MonoBehaviour {
 			getPreguntaAleatoria();
 			panelRespuesta.GetComponent<Animator>().SetBool("Entrada", false);
 		}
+		else
+		{
+			terminarQuiz();
+		}
+	}
+
+	public void terminarQuiz()
+	{
+		SceneManager.LoadScene("IndexScreen", LoadSceneMode.Additive);
+	}
+
+	public int getMaxPreguntas()
+	{
+		return preguntas.Length;
+	}
+
+	public int getCantidadPreguntasSinResponder()
+	{
+		return preguntasSinResponder.Count;
 	}
 }

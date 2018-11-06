@@ -88,4 +88,9 @@ public class GameManager : MonoBehaviour {
 
 		return resultado;
 	}
+
+	public Pregunta[] getPreguntas()
+	{
+		return preguntas;
+	}
 }

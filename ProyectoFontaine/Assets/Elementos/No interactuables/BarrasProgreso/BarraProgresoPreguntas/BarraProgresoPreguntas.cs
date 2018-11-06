@@ -5,11 +5,13 @@ using UnityEngine.UI;
 
 public class BarraProgresoPreguntas : MonoBehaviour {
 
-	public int numeroPreguntasMaximo;
-    public int numeroPreguntas;
+    public QuizManager quizManager;
 	public bool over;
 
     private Image imageProgreso;
+
+    private int numeroPreguntasMaximo;
+    private int numeroPreguntas;
 
 	// Use this for initialization
 	void Start () {
@@ -19,6 +21,9 @@ public class BarraProgresoPreguntas : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        numeroPreguntasMaximo = quizManager.getMaxPreguntas();
+        numeroPreguntas = quizManager.getCantidadPreguntasSinResponder();
+        
         if (numeroPreguntas >= numeroPreguntasMaximo)
         {
             over = true;
@@ -28,7 +33,7 @@ public class BarraProgresoPreguntas : MonoBehaviour {
             over = false;
         }
 
-		imageProgreso.fillAmount = ((float)numeroPreguntas / numeroPreguntasMaximo);
+		imageProgreso.fillAmount = ((float)(numeroPreguntasMaximo-numeroPreguntas) / numeroPreguntasMaximo);
 	}
 
     public void aumentarPregunta()

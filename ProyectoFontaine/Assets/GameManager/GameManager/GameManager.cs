@@ -10,6 +10,7 @@ using MySql.Data.Types;
 using MySql.Data.MySqlClient;
 
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
 
@@ -17,7 +18,7 @@ public class GameManager : MonoBehaviour {
 	public string nombreBaseDatos;
 	public string usuarioBaseDatos;
 	public string contraseniaBaseDatos;
-	public QuizManager quizManager;
+	private QuizManager quizManager;
 	
 	private string datosConexion;
 	private MySqlConnection conexion;
@@ -50,11 +51,9 @@ public class GameManager : MonoBehaviour {
 			preguntas[i] = new Pregunta(pregunta, opcion1, opcion2, opcion3, opcion4, opcionCorrecta);
 		}
 
-		quizManager.setPreguntas(preguntas);
+		setPreguntasQuizManager();
 
 		resultado.Close();
-
-		
 		
 	}
 
@@ -92,5 +91,15 @@ public class GameManager : MonoBehaviour {
 	public Pregunta[] getPreguntas()
 	{
 		return preguntas;
+	}
+
+	public void setPreguntasQuizManager()
+	{
+		if(SceneManager.GetActiveScene().name == "QuizScreen")
+		{
+			Debug.Log("entré");
+			quizManager = GameObject.Find("QuizManager").GetComponent<QuizManager>();
+			quizManager.setPreguntas(preguntas);
+		}
 	}
 }

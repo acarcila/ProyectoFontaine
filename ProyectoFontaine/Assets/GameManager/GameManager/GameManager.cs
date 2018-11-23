@@ -133,7 +133,8 @@ public class GameManager : MonoBehaviour {
 
 	public Calificacion[] getRespuestas()
 	{
-		MySqlDataReader resultado = select("`respuestas` WHERE estudiante_id=" + estudiante.idEstudiante);
+		// MySqlDataReader resultado = select("`respuestas` WHERE estudiante_id=" + estudiante.idEstudiante);
+		MySqlDataReader resultado = select("`respuestas` WHERE estudiante_id=" + 1234);
 		DataTable tabla = new DataTable();
 		tabla.Load(resultado);
 
@@ -145,8 +146,9 @@ public class GameManager : MonoBehaviour {
 			DataRow row = tabla.Rows[i];
 			int idCalificacion = 0;
     		int idPregunta = 0;
-    		string idEstudiante = estudiante.idEstudiante;
-			int nota = int.Parse(row["nota"].ToString());
+    		// string idEstudiante = estudiante.idEstudiante;
+			string idEstudiante = "1234";
+			float nota = float.Parse(row["nota"].ToString());
 			int tiempo = int.Parse(row["tiempo"].ToString());
 
 			calificacion[i] = new Calificacion(idCalificacion, idPregunta, idEstudiante, nota, tiempo);
@@ -207,5 +209,10 @@ public class GameManager : MonoBehaviour {
 	public void setTiempoPrueba(int tiempoPrueba)
 	{
 		this.tiempoPrueba = tiempoPrueba;
+	}
+
+	public static void actionButtonSalir()
+	{
+		Application.Quit();
 	}
 }

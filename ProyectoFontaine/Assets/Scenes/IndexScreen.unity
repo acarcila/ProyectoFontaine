@@ -481,7 +481,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 216883671}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1532772069}
+        m_MethodName: actionButtonSalir
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &216883671
@@ -1655,6 +1666,54 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ShowMaskGraphic: 0
+--- !u!1001 &1507157197
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4047406288750098, guid: da382143a8b7dd34196c11b9530290fa, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 505.99686
+      objectReference: {fileID: 0}
+    - target: {fileID: 4047406288750098, guid: da382143a8b7dd34196c11b9530290fa, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 568.7647
+      objectReference: {fileID: 0}
+    - target: {fileID: 4047406288750098, guid: da382143a8b7dd34196c11b9530290fa, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: -10.671903
+      objectReference: {fileID: 0}
+    - target: {fileID: 4047406288750098, guid: da382143a8b7dd34196c11b9530290fa, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4047406288750098, guid: da382143a8b7dd34196c11b9530290fa, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4047406288750098, guid: da382143a8b7dd34196c11b9530290fa, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4047406288750098, guid: da382143a8b7dd34196c11b9530290fa, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4047406288750098, guid: da382143a8b7dd34196c11b9530290fa, type: 2}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: da382143a8b7dd34196c11b9530290fa, type: 2}
+  m_IsPrefabAsset: 0
+--- !u!114 &1507157198 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114362871274468940, guid: da382143a8b7dd34196c11b9530290fa,
+    type: 2}
+  m_PrefabInternal: {fileID: 1507157197}
+  m_Script: {fileID: 11500000, guid: 9b4ddaa998f6f0d40af1fb7a5d54584d, type: 3}
 --- !u!1 &1519799764
 GameObject:
   m_ObjectHideFlags: 0
@@ -1832,6 +1891,12 @@ Prefab:
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3f155a9cfd10c6b479446f3819507c24, type: 2}
   m_IsPrefabAsset: 0
+--- !u!114 &1532772069 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114249910725302356, guid: 3f155a9cfd10c6b479446f3819507c24,
+    type: 2}
+  m_PrefabInternal: {fileID: 1532772068}
+  m_Script: {fileID: 11500000, guid: 28da956acd3ace445b0679c4bb213ad2, type: 3}
 --- !u!1 &1629631148
 GameObject:
   m_ObjectHideFlags: 0
@@ -1966,7 +2031,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1756198428
 GameObject:
@@ -2166,7 +2231,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1822104439}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1507157198}
+        m_MethodName: actionButtonCalificaciones
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1822104439
@@ -2290,7 +2366,7 @@ RectTransform:
   m_Children:
   - {fileID: 220406182}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}

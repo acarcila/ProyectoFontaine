@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/ResultScreen.unity
     guid: 211de0a725638a74f94d732f3ebae5e5
+  - enabled: 1
+    path: Assets/Scenes/CalificationsScreen.unity
+    guid: 4ccde14c66768144e972b9a1ea20f872
   m_configObjects: {}

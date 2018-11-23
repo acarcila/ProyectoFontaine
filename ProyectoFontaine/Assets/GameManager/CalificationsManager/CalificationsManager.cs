@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using UnityEngine;
 
 public class CalificationsManager : MonoBehaviour
 {
@@ -70,4 +71,8 @@ public class CalificationsManager : MonoBehaviour
 		return mejorTiempoCalificacion;
     }
 
+	public void actionButtonVideoInteractivo()
+	{
+		SceneManager.LoadScene("IndexScreen", LoadSceneMode.Single);
+	}
 }

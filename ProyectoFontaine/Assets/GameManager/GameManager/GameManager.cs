@@ -18,18 +18,72 @@ public class GameManager : MonoBehaviour {
 	public string nombreBaseDatos;
 	public string usuarioBaseDatos;
 	public string contraseniaBaseDatos;
-	private QuizManager quizManager;
 	
 	private string datosConexion;
 	private MySqlConnection conexion;
 
 	private Pregunta[] preguntas;
-	// Use this for initialization
-	void Start () {
-		datosConexion = "Server=" + servidorBaseDatos + ";Database=" + nombreBaseDatos + ";Uid=" + usuarioBaseDatos + ";Pwd=" + contraseniaBaseDatos + ";";
+	private String scene;
 
+	private Estudiante estudiante;
+	
+	private float notaPrueba;
+	private int tiempoPrueba;
+	// Use this for initialization
+
+	public GameManager(string servidorBaseDatos, string nombreBaseDatos, string usuarioBaseDatos, string contraseniaBaseDatos)
+	{
+		this.servidorBaseDatos = servidorBaseDatos;
+		this.nombreBaseDatos = nombreBaseDatos;
+		this.usuarioBaseDatos = usuarioBaseDatos;
+		this.contraseniaBaseDatos = contraseniaBaseDatos;
+	}
+
+	void Awake()
+    {
+        GameObject[] objs = GameObject.FindGameObjectsWithTag("GameController");
+
+        if (objs.Length > 1)
+        {
+            Destroy(this.gameObject);
+        }
+
+        DontDestroyOnLoad(this.gameObject);
+    }
+	void Start () {				
 		conectarServidorBD();
 
+		getPreguntasFromBD();		
+	}
+
+	void Update()
+	{
+		scene = SceneManager.GetActiveScene().name;
+		if(Input.GetKeyDown(KeyCode.Escape))
+		{
+			Application.Quit();
+		}
+	}
+	
+	public bool conectarServidorBD()
+	{
+		datosConexion = "Server=" + servidorBaseDatos + ";Database=" + nombreBaseDatos + ";Uid=" + usuarioBaseDatos + ";Pwd=" + contraseniaBaseDatos + ";";
+		conexion = new MySqlConnection(datosConexion);
+
+		try
+		{
+			conexion.Open();
+			Debug.Log("Conexión exitosa con la base de datos");
+			return true;
+		}catch(MySqlException ex)
+		{
+			Debug.LogError("Imposible conextarse a la Base de Datos: " + ex);
+			return false;
+		}
+	}
+
+	public void getPreguntasFromBD()
+	{
 		MySqlDataReader resultado = select("`preguntas`");
 		DataTable tabla = new DataTable();
 		tabla.Load(resultado);
@@ -50,33 +104,62 @@ public class GameManager : MonoBehaviour {
 
 			preguntas[i] = new Pregunta(pregunta, opcion1, opcion2, opcion3, opcion4, opcionCorrecta);
 		}
-
-		setPreguntasQuizManager();
-
-		resultado.Close();
 		
+		resultado.Close();
 	}
 
-	void Update()
+	public bool getEstudiante(string idEstudiante)
 	{
-		if(Input.GetKeyDown(KeyCode.Escape))
-		{
-			Application.Quit();
-		}
-	}
-	
-	private void conectarServidorBD()
-	{
-		conexion = new MySqlConnection(datosConexion);
+		MySqlDataReader resultado = select("`usuarios` WHERE identificacion='" + idEstudiante + "'");
+		DataTable tabla = new DataTable();
+		tabla.Load(resultado);
 
-		try
+		// foreach(DataRow row in tabla.Rows)
+		// {
+		for(int i = 0; i < tabla.Rows.Count; i++)
 		{
-			conexion.Open();
-			Debug.Log("Conexión exitosa con la base de datos");
-		}catch(MySqlException ex)
-		{
-			Debug.LogError("Imposible conextarse a la Base de Datos: " + ex);
+			DataRow row = tabla.Rows[i];
+			string identificacion = row["identificacion"].ToString();
+			string nombre = row["nombre"].ToString();
+			string apellido = row["apellido"].ToString();
+
+			estudiante = new Estudiante(identificacion, nombre, apellido);
 		}
+		
+		resultado.Close();
+
+		return tabla.Rows.Count > 0;
+	}
+
+	public Calificacion[] getRespuestas()
+	{
+		MySqlDataReader resultado = select("`respuestas` WHERE estudiante_id=" + estudiante.idEstudiante);
+		DataTable tabla = new DataTable();
+		tabla.Load(resultado);
+
+		Calificacion[] calificacion = new Calificacion[tabla.Rows.Count];
+		// foreach(DataRow row in tabla.Rows)
+		// {
+		for(int i = 0; i < tabla.Rows.Count; i++)
+		{
+			DataRow row = tabla.Rows[i];
+			int idCalificacion = 0;
+    		int idPregunta = 0;
+    		string idEstudiante = estudiante.idEstudiante;
+			int nota = int.Parse(row["nota"].ToString());
+			int tiempo = int.Parse(row["tiempo"].ToString());
+
+			calificacion[i] = new Calificacion(idCalificacion, idPregunta, idEstudiante, nota, tiempo);
+		}
+		
+		resultado.Close();
+
+		return calificacion;
+	}
+
+	public void setScene(string scene)
+	{
+		this.scene = scene;
 	}
 
 	public MySqlDataReader select(string selectInfo)
@@ -88,18 +171,41 @@ public class GameManager : MonoBehaviour {
 		return resultado;
 	}
 
+	public void insertRespuesta(string estudianteID, float nota, int tiempo)
+	{
+		MySqlCommand cmd = conexion.CreateCommand();
+		cmd.CommandText = "INSERT INTO `respuestas`(`estudiante_id`, `nota`, `tiempo`) VALUES (" + estudianteID + "," + nota + "," + tiempo + ")";
+		MySqlDataReader resultado = cmd.ExecuteReader();
+		resultado.Close();
+	}
+
+	public void subirRespuesta(float nota, int tiempo)
+	{
+		insertRespuesta(estudiante.idEstudiante, nota, tiempo);
+	}
+
 	public Pregunta[] getPreguntas()
 	{
 		return preguntas;
 	}
 
-	public void setPreguntasQuizManager()
+	public float getNotaPrueba()
 	{
-		if(SceneManager.GetActiveScene().name == "QuizScreen")
-		{
-			Debug.Log("entré");
-			quizManager = GameObject.Find("QuizManager").GetComponent<QuizManager>();
-			quizManager.setPreguntas(preguntas);
-		}
+		return notaPrueba;
+	}
+
+	public void setNotaPrueba(float notaPrueba)
+	{
+		this.notaPrueba = notaPrueba;
+	}
+
+	public int getTiempoPrueba()
+	{
+		return tiempoPrueba;
+	}
+
+	public void setTiempoPrueba(int tiempoPrueba)
+	{
+		this.tiempoPrueba = tiempoPrueba;
 	}
 }

@@ -13,28 +13,53 @@ public class QuizManager : MonoBehaviour {
 	public Button botonRespuesta3;
 	public Button botonRespuesta4;
 	public PanelRespuesta panelRespuesta;
+	private GameManager gameManager;
 	private Pregunta[] preguntas;
 	private static List<Pregunta> preguntasSinResponder;
 	private Pregunta preguntaActual;
+
+	private int cantidadRespuestasCorrectas;
+	private float tiempo;
+
 	// Use this for initialization
 	void Start () {
-		
+		gameManager = GameObject.FindGameObjectsWithTag("GameController").First().GetComponent<GameManager>();
+		setPreguntas(gameManager.getPreguntas());
+
+		cantidadRespuestasCorrectas = 0;
+		tiempo = 0f;
 	}
 	
 	// Update is called once per frame
 	void Update () {
+		tiempo += Time.deltaTime;
+	}
+
+	public Pregunta[] getPreguntasSinResolver()
+	{
+		return preguntasSinResponder.ToArray();
 	}
 
 	public void setPreguntas(Pregunta[] preguntas)
 	{
 		this.preguntas = preguntas;
 
-		if(preguntasSinResponder == null)
+		if(preguntasSinResponder == null || preguntasSinResponder.Count == 0)
 		{
 			preguntasSinResponder = preguntas.ToList();
 		}
 
 		getPreguntaAleatoria();
+	}
+
+	public Pregunta[] getPreguntas()
+	{
+		return preguntas;
+	}
+
+	public Pregunta getPreguntaActual()
+	{
+		return preguntaActual;
 	}
 
 	public void getPreguntaAleatoria()
@@ -67,6 +92,7 @@ public class QuizManager : MonoBehaviour {
 		{
 			Debug.Log("CORRECTO");
 			panelRespuesta.valorRespuesta = true;
+			cantidadRespuestasCorrectas++;
 		}
 		else
 		{
@@ -97,13 +123,22 @@ public class QuizManager : MonoBehaviour {
 		}
 		else
 		{
+			float nota = ((float)cantidadRespuestasCorrectas / preguntas.Length) * 5f;
+			int tiempoSegundos = Mathf.RoundToInt(tiempo);
+			gameManager.setNotaPrueba(nota);
+			gameManager.setTiempoPrueba(tiempoSegundos);
+
+			cantidadRespuestasCorrectas = 0;
+			tiempo = 0f;
+			setPreguntas(preguntas);
+
 			terminarQuiz();
 		}
 	}
 
 	public void terminarQuiz()
 	{
-		SceneManager.LoadScene("IndexScreen", LoadSceneMode.Additive);
+		SceneManager.LoadScene("ResultScreen", LoadSceneMode.Single);
 	}
 
 	public int getMaxPreguntas()
